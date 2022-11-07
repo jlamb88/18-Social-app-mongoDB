@@ -1,5 +1,10 @@
 const router = requires('express').Router()
-const {getThoughts, getOneThought, addThought, editThought, removeThought} = require('../controllers')
+const {
+    getThoughts, 
+    getOneThought, 
+    addThought, 
+    editThought, 
+    removeThought} = require('../controllers')
 
 router.route('/:userId/thoughts').get(getThoughts).post(addThought)
 
