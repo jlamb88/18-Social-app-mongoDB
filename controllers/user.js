@@ -1,13 +1,13 @@
-const Users = require('../models/users')
+const User = require('../models')
 
 module.exports = {
 getUsers(req, res) {
-    Users.find()
+    User.find()
     .then((users) => res.json(users))
     .catch((err)=> res.status(500).json(err))
 },
 getOneUser(req,res) {
-    Users.findOne({_id: req.params.userId})
+    User.findOne({_id: req.params.userId})
     .select('-__v')
     .then((user)=> 
     !user
@@ -16,9 +16,11 @@ getOneUser(req,res) {
     .catch((err)=> res.status(500).json(err))
 },
 createUser(req,res) {
-    Users.create(req.body)
+    User.create(req.body)
     .then((userData) => res.json(userData))
     .catch((err)=> res.status(500).json(err))
-
+},
+deleteUser(req,res) {
+    User.delete({_id: req.params.userId})
 }
 }

@@ -1,11 +1,11 @@
-const mongoose = require('mongose')
+const {connect, connection} = require('mongoose')
 
 const connectionStringURI = 'mongodb://127.0.0.1:27017/socialDB'
 
-mongoose.connect(
+connect(
     connectionStringURI,
     {useNewUrlParser: true, useUnifiedTopology: true},
 
 )
 
-module.exports = mongoose.connection
+module.exports = connection
