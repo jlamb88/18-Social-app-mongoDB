@@ -2,7 +2,7 @@ const router = require('express').Router()
 const {
     addFriend,
     removeFriend
-} = require ('../controllers')
+} = require('../../controllers')
 
 router.route('/:friendId').post(addFriend).delete(removeFriend)
 

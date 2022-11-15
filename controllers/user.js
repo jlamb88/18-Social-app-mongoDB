@@ -22,5 +22,12 @@ createUser(req,res) {
 },
 deleteUser(req,res) {
     User.delete({_id: req.params.userId})
-}
+},
+
+updateUser(req,res) {
+    User.findOneAndUpdate(
+        {_id:req.params.userId},
+        {$set: req.body},
+        {validators: true, new:true})
+  }
 }

@@ -1,7 +1,8 @@
-const User = require('./user')
-// const Thought = require('./thought')
-// const Friend = require('./friend')
+const router = require('express').Router();
+const userControls = require('./user')
+const thoughtControls = require('./thought')
 
+router.use('/users', userControls)
+router.use('/thoughts', thoughtControls)
 
-
-module.exports = {User} //, Thought, Friend}
+module.exports = router;
