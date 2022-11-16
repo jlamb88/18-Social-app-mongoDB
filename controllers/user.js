@@ -3,7 +3,8 @@ const { User } = require('../models')
 module.exports = {
     getUsers(req, res) {
         User.find()
-            .then((users) => res.json(users))
+            .select('-__v')
+            .then((thought) => res.json(thought))
             .catch((err) => res.status(500).json(err))
     },
     getOneUser(req, res) {
@@ -44,8 +45,6 @@ module.exports = {
             .then((userData) => res.json(userData))
             .catch((err) => res.status(500).json(err))
     },
-
-
     removeFriend(req, res) {
         User.findOneAndUpdate(
             { _id: req.params.userId },
