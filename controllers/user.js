@@ -1,4 +1,4 @@
-const { User } = require('../models')
+const { User, Thought } = require('../models')
 
 module.exports = {
     getUsers(req, res) {
@@ -8,7 +8,7 @@ module.exports = {
             .catch((err) => res.status(500).json(err))
     },
     getOneUser(req, res) {
-        User.findOne({ _id: req.params.userId })
+        User.findById(req.params.userId)
             .select('-__v')
             .then((user) =>
                 !user
@@ -23,7 +23,12 @@ module.exports = {
     },
     deleteUser(req, res) {
         User.findOneAndDelete({ _id: req.params.userId })
-            .then(() => res.json({ msg: 'User deleted successfully' }))
+            .then((userData) => {
+                userData.thoughts.forEach(async thought => {
+                    await Thought.findByIdAndRemove(thought)
+                })
+                res.json("User deleted")
+            })
             .catch((err) => res.status(500).json(err))
     },
 
@@ -36,8 +41,6 @@ module.exports = {
             .catch((err) => res.status(500).json(err))
     },
     addFriend(req, res) {
-        console.log("body", req.body)
-        console.log("param", req.params)
         User.findOneAndUpdate(
             { _id: req.params.userId },
             { $addToSet: { friends: req.params.friendId } },

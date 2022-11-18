@@ -1,5 +1,20 @@
-const { model, Schema, isObjectIdOrHexString } = require('mongoose')
-const Reaction = require('./reaction')
+const { model, Schema, Types, isObjectIdOrHexString } = require('mongoose')
+
+const reactionSchema = new Schema(
+    {
+        reactionId: {
+            type: Schema.Types.ObjectId,
+            default: () => new Types.ObjectId(),
+        },
+        reactionBody: { type: String, maxLength: 280, required: true },
+        username: {
+            type: String,
+            ref: 'User',
+            required: true
+        },
+        createdAt: { type: Date, default: Date.now }
+    }
+)
 
 const thoughtSchema = new Schema(
     {
@@ -7,13 +22,14 @@ const thoughtSchema = new Schema(
             type: String, required: 'Enter your thought',
             minLength: 1, maxLength: 280
         },
-        createdAt: { type: Date, default: Date.now },
+
         username: [{
             type: String,
-            ref: 'user',
+            ref: 'User',
             required: true
         }],
-        reactions: [Reaction]
+        reactions: [reactionSchema],
+        createdAt: { type: Date, default: Date.now },
     },
     {
         toJSON: {
