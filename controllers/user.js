@@ -23,12 +23,20 @@ module.exports = {
     },
     deleteUser(req, res) {
         User.findOneAndDelete({ _id: req.params.userId })
-            .then((userData) => {
-                userData.thoughts.forEach(async thought => {
-                    await Thought.findByIdAndRemove(thought)
-                })
-                res.json("User deleted")
-            })
+            // .then((userData) => {
+            //     userData.thoughts.forEach(async thought => {
+            //         await Thought.findByIdAndRemove(thought)
+            //     })
+            //     res.json("User deleted")
+            // })
+            .then(async (user) => {
+                if (!user) { res.status(404).json({ message: 'No user with that ID' }) }
+                else {
+                    await Thought.deleteMany({ username: user.username })
+                    res.json("User deleted")
+                }
+            }
+            )
             .catch((err) => res.status(500).json(err))
     },
 
